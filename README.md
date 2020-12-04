@@ -1,0 +1,1 @@
+A simple Library app built with vanilla javascript.
