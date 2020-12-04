@@ -16,22 +16,8 @@ class Book {
 
 class UI {
     static displayBooks() {
-      const StoredBooks = [
-          {
-              title: "Absalom, Absalom!",
-              author: "William Faulkner",
-              isbn: "123434545",
-              status: "read"
-          },
-          {
-            title: "The House of Mirth",
-            author: "Edith Wharton",
-            isbn: "5869896",
-            status: "read"
-        }
-      ];
-      const books = StoredBooks;
-      books.forEach((book) => UI.addBookToList(book));
+        const books = Store.getBooks();
+        books.forEach((book) => UI.addBookToList(book));
     }
     static addBookToList(book) {
         const list = document.querySelector("#book-list");
@@ -62,6 +48,41 @@ class UI {
     }
     
 }
+
+/*
+    This store class handles local storage
+*/
+
+class Store {
+    static getBooks() {
+      let books;
+      if(localStorage.getItem('books') === null) {
+        books = [];
+      } else {
+        books = JSON.parse(localStorage.getItem('books'));
+      }
+  
+      return books;
+    }
+  
+    static addBook(book) {
+      const books = Store.getBooks();
+      books.push(book);
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+  
+    static removeBook(isbn) {
+      const books = Store.getBooks();
+      books.forEach((book, index) => {
+        if(book.isbn === isbn) {
+          books.splice(index, 1);
+        }
+      });
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+}  
+
+
 /*
     display the books
 */
@@ -89,6 +110,7 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
         const book = new Book(title, author, isbn, status);
         //add a new book
         UI.addBookToList(book);
+        Store.addBook(book);
         UI.clearFields();
         
     }
