@@ -31,7 +31,26 @@ class UI {
         }
       ];
       const books = StoredBooks;
+      books.forEach((book) => UI.addBookToList(book));
+    }
+    static addBookToList(book) {
+        const list = document.querySelector("#book-list");
+        const row = document.createElement("tr");
+    
+        row.innerHTML = `
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.isbn}</td>
+          <td>${book.status}</td>
+          <td><a href="#" class="btn btn-danger btn-sm delete">Remove Book</a></td>
+        `;
+    
+        list.appendChild(row);
     }
 }
+/*
+    display the books
+*/
+document.addEventListener("DOMContentLoaded", UI.displayBooks);
   
   
