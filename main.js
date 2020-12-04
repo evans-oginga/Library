@@ -54,6 +54,12 @@ class UI {
         document.querySelector('#isbn').value = '';
         document.querySelector('#status').value = '';
     }
+    //delete a book
+    static deleteBook(el) {
+        if(el.classList.contains('delete')) {
+          el.parentElement.parentElement.remove();
+        }
+    }
     
 }
 /*
@@ -86,6 +92,13 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
         UI.clearFields();
         
     }
-  });
+});
   
   
+/*
+    add the method to delete a book when the remove book button is clicked
+*/
+document.querySelector('#book-list').addEventListener('click', (e) => {
+    UI.deleteBook(e.target);
+    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+});
